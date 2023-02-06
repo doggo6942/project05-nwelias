@@ -90,7 +90,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
     class RuntimeTestsBest {
         @Order(specialTestLevel)
         @DisplayName("Test get() best case complexity with int keys")
-        @DependsOn({"get"})
+        @DependsOn({"put", "get"})
         @Test
         @Timeout(value = 20, unit = SECONDS)
         public void testBestCase() {
@@ -140,23 +140,10 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
     @Nested
     class ImplementationTests {
         @Order(classSpecificTestLevel)
-        @DisplayName("Check for linked node class")
-        @TestDescription("This test checks that hat there is a Node class in the MoveToFrontDictionary")
-        @Test
-        public void testLinkedNode() {
-            Class[] classes = MoveToFrontDictionary.class.getDeclaredClasses();
-            for (Class clazz : classes) {
-                if (Iterator.class.isAssignableFrom(clazz)) {
-                    continue;
-                }
-                MoveToFrontChecker.isNode(clazz);
-            }
-        }
-
-        @Order(classSpecificTestLevel)
         @DisplayName("Check MoveToFrontDictionary class is properly implemented")
         @TestDescription("This test makes sure that the implementation of the MoveToFront dictionary, i.e. like having the right fields")
-        @TestHint("MoveToFrontDictionary should only have a head node and an int field to store size")
+        @TestHint("MoveToFrontDictionary should only have a head node and an int field to store size. It should also implement a Node class.")
+        @DependsOn({"fields", "node class"})
         @Test
         public void checkMTF() {
             MoveToFrontChecker.checkClass(MoveToFrontDictionary.class);
@@ -182,7 +169,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @Order(classSpecificTestLevel)
         @DisplayName("Check for excessive node allocation in get")
         @TestDescription("This test checks that no extra nodes are allocated in the get() method")
-        @DependsOn({"get"})
+        @DependsOn({"put", "get"})
         @Test
         public void testForExcessiveNodeAllocationGet() {
             NewNode.MoveToFrontDictionary_NUM_CALLS = 0;
@@ -203,7 +190,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @Order(classSpecificTestLevel)
         @DisplayName("Check for excessive Node allocation in remove")
         @TestDescription("This test checks that no extra nodes are allocated in the remove() method")
-        @DependsOn({"remove"})
+        @DependsOn({"put", "remove"})
         @Test
         public void testForExcessiveNodeAllocationRemove() {
             NewObjectArray.NUM_CALLS = 0;
@@ -225,6 +212,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @Test
         @DisplayName("Sanity check that accessing keys in various locations in the dictionary works")
         @TestDescription("This test tries to obtain and remove data from various parts of the dictionary (front, back) to make sure its in the data structure")
+        @DependsOn({"put", "get", "remove"})
         @Order(classSpecificTestLevel)
         public void testDataLocations() {
             MoveToFrontDictionary<Integer, Integer> impl = new MoveToFrontDictionary<>();
@@ -266,6 +254,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @DisplayName("Test that referencing a key moves it to the front")
         @TestDescription("This test is checking the fundamental principle of the MoveToFrontDictionary - that when you access a key, it does get moved to the front")
         @TestHint("Make sure to move to front in both containsKey and get")
+        @DependsOn({"put", "containsKey", "get"})
         @Order(specialTestLevel)
         public void testMoveToFrontProperty() {
             MoveToFrontDictionary<Integer, Integer> impl = new MoveToFrontDictionary<>();
@@ -308,6 +297,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @DisplayName("Test removing from the front has the desired behavior")
         @TestDescription("This test makes sure that removing from the front updates the head and the rest of the linked list correctly")
         @TestHint("Make sure you update your head field correctly in removal, and that if a key is removed, the MoveToFrontDictionary is able to recognize and handle that")
+        @DependsOn({"put", "get", "remove", "values"})
         @Test
         public void testFrontRemove() {
             MoveToFrontDictionary<Integer, Integer> impl = new MoveToFrontDictionary<>();

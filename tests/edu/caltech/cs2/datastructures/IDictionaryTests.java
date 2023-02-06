@@ -250,7 +250,7 @@ public abstract class IDictionaryTests {
         @ParameterizedTest(name = "Test IDictionary interface with seed={0} and size={1}")
         @CsvSource({"24589, 3000", "96206, 5000"})
         @TestDescription("Creates random data to test the stability of the IDictionary; DOES test remove.")
-        @DependsOn({"put", "size", "get", "keys", "iterator", "values", "containsKey", "containsValue"})
+        @DependsOn({"put", "size", "get", "keys", "iterator", "values", "containsKey", "containsValue", "remove"})
         void stressTestIDictionaryRemove(int seed, int size) {
             iDictionaryStressTestHelper(seed, size, true);
         }

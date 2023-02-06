@@ -86,7 +86,7 @@ public abstract class IDictionaryNGramTests extends IDictionaryTests {
     class ComplexityTestsNGram {
         @Order(specialTestLevel)
         @DisplayName("Test get() complexity with NGram keys")
-        @DependsOn({"get"})
+        @DependsOn({"put", "get"})
         @Test
         @Timeout(value = 20, unit = SECONDS)
         public void testGetComplexity() {
@@ -126,7 +126,7 @@ public abstract class IDictionaryNGramTests extends IDictionaryTests {
 
         @Order(specialTestLevel)
         @DisplayName("Test remove() complexity with NGram keys")
-        @DependsOn({"remove"})
+        @DependsOn({"put", "remove"})
         @Test
         @Timeout(value = 20, unit = SECONDS)
         public void testRemoveComplexity() {
@@ -146,7 +146,7 @@ public abstract class IDictionaryNGramTests extends IDictionaryTests {
 
         @Order(specialTestLevel)
         @DisplayName("Test size() complexity with NGram keys")
-        @DependsOn({"size"})
+        @DependsOn({"put", "size"})
         @Timeout(value = 20, unit = SECONDS)
         public void testSizeComplexity() {
             Function<Integer, IDictionary<Object, Object>> provide = (Integer numElements) -> {

@@ -168,9 +168,9 @@ public class BSTDictionaryTests extends IDictionaryNGramTests {
 
         @Test
         @Order(classSpecificTestLevel)
-        @DisplayName("Test BST Implementation")
+        @DisplayName("Test binary search tree is structured correctly")
         @TestDescription("This test is testing sample keys and values to make sure the BST stores the values correctly.")
-        @DependsOn({"put", "toString"})
+        @DependsOn({"put"})
         public void testActualBST() {
             BSTDictionary<String, Integer> bst = new BSTDictionary<>();
 

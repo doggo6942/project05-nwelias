@@ -218,14 +218,14 @@ public class NGramTests {
 
         for(NGram A : diff_length) {
             for(NGram B : diff_length) {
-                assertFalse(A.equals(B) && A.hashCode() != B.hashCode(), "The hashCode function returns different values for two equal NGrams");
-                assertFalse(!A.equals(B) && A.hashCode() == B.hashCode(), "The hashCode function returns the same hashCode for (simple) non-equal NGrams");
+                assertTrue(!A.equals(B) || A.hashCode() == B.hashCode(), "The hashCode function should return the same values for two equal NGrams");
+                assertTrue(A.equals(B) || A.hashCode() != B.hashCode(), "The hashCode function should return different hashCodes for (simple) non-equal NGrams");
             }
         }
         for(NGram A : permutations) {
             for(NGram B : permutations) {
-                assertFalse(A.equals(B) && A.hashCode() != B.hashCode(), "The hashCode function returns different values for two equal NGrams");
-                assertFalse(!A.equals(B) && A.hashCode() == B.hashCode(), "The hashCode function returns the same hashCode for (simple) non-equal NGrams");
+                assertTrue(!A.equals(B) || A.hashCode() == B.hashCode(), "The hashCode function should return the same values for two equal NGrams");
+                assertTrue(A.equals(B) || A.hashCode() != B.hashCode(), "The hashCode function should return different hashCodes for (simple) non-equal NGrams");
             }
         }
     }
