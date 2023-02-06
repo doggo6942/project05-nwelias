@@ -170,6 +170,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
         @DisplayName("Check for excessive node allocation in get")
         @TestDescription("This test checks that no extra nodes are allocated in the get() method")
         @DependsOn({"put", "get"})
+        @TestHint("get should not be affecting the dictionary in any way; it should simply find and return a value.")
         @Test
         public void testForExcessiveNodeAllocationGet() {
             NewNode.MoveToFrontDictionary_NUM_CALLS = 0;
