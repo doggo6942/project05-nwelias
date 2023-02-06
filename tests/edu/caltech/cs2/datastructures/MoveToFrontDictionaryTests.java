@@ -90,7 +90,7 @@ public class MoveToFrontDictionaryTests extends IDictionaryNGramTests {
     class RuntimeTestsBest {
         @Order(specialTestLevel)
         @DisplayName("Test get() best case complexity with int keys")
-        @DependsOn({"get"})
+        @DependsOn({"put", "get"})
         @Test
         @Timeout(value = 20, unit = SECONDS)
         public void testBestCase() {
