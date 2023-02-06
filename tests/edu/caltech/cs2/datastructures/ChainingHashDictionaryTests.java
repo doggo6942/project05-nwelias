@@ -212,7 +212,7 @@ public class ChainingHashDictionaryTests extends IDictionaryNGramTests {
         @Test
         @TestDescription("This test checks that you use the provided supplier function when resizing the dictionary.")
         @TestHint("Make sure you are initializing all the buckets of the resized dictionary appropriately with the supplier function. Do not use streams.")
-        @DependsOn({"put", "remove"})
+        @DependsOn({"put"})
         public void testSupplierUsage() {
             // Reset from any previous tests
             supplierCounter.resetCounter();
