@@ -33,21 +33,9 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
             table[i] = chain.get();
         }
 
-//        (Supplier<IDictionary>[]) makeTable(capacity);
-//        for()
-//        chain.get();
-//        this.loadFactor = DEFAULT_LOAD_FACTOR;
-
     }
 
 
-
-
-
-
-      //MarkovTextGenerator.ArrayDeque<> deq = new MarkovTextGenerator.ArrayDeque<>();
-    //MarkovTextGenerator.TrieMap<Integer,K,V> = new MarkovTextGenerator.TrieMap<Integer,K,V>
-    //triemap where hashcode = a, <K,V> dictionary
     /**
      * @param key
      * @return value corresponding to key
@@ -76,33 +64,6 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
             }
             return null;
     }
-//        if(table[index] == null || !table[index].get().containsKey(key))
-//            for(IDictionary<K,V> e: table){
-//                if(e.containsKey(key)){
-//                    e.remove(key);
-//                    this.elementNum--;
-//                }
-//            }
-//        V value = chain.remove(key);
-//        if (value != null) {
-//            size--;
-//            if (chain.isEmpty()) {
-//                table[index] = null;
-//            }
-//        }
-//        return value;
-//        }
-//        int index = Math.floorMod(key.hashCode(), capacity);
-//        IDictionary<K, V> chain = table[index];
-//        if (chain == null) {
-//            return null;
-//        }
-//        V removed = chain.remove(key);
-//        if (removed != null) {
-//            size--;
-//        }
-//        return removed;
-//    }
 
     @Override
     public V put(K key, V value) {

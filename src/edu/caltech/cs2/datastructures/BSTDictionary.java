@@ -233,22 +233,11 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
             if (node.value.equals(value)) {
                 return true;
             }
-            //key k of a node is always greater than the keys
-            //present in its left sub tree
-            //key k of a node is always lesser thann the keys present in
-            //its right sub tree
-            //
+
             if (containsValue(node.left,value) || containsValue(node.right, value)){
                 return true;
             }
-//            if ((value.hashCode() - node.value.hashCode()) < 0) {
-//                return containsValue(node.left, value);
-//            }
-//            if ((value.hashCode() - node.value.hashCode()) > 0){
-//                return containsValue(node.right, value);
-//            }
-//            //return false;
-//            return false;
+//
             return false;
         }
 

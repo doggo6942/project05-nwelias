@@ -97,9 +97,6 @@ public class NGram implements Iterable<String>, Comparable<NGram> {
 
     @Override
     public boolean equals(Object o) {
-        //the calling object is "this", and it is implied as the first object being comapred for
-        //equality.
-        //check if the input object is an instance of the Ngram class
         if (!(o instanceof NGram)) {
             return false;
         }

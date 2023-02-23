@@ -138,11 +138,7 @@ public class MoveToFrontDictionary<K, V> implements IDictionary<K,V> {
         while (current != null) {
             contents.append(current.key + ": " + current.value + ", ");
 
-//
-//            }
-//
-//            current = nodes.dequeue();
-//        }
+
         }
             return "{" + contents.toString() + "}";
         }
