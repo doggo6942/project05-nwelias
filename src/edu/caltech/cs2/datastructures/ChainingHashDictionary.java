@@ -1,43 +1,179 @@
 package edu.caltech.cs2.datastructures;
 
 import edu.caltech.cs2.interfaces.ICollection;
-import edu.caltech.cs2.interfaces.IDeque;
+
 import edu.caltech.cs2.interfaces.IDictionary;
-import edu.caltech.cs2.interfaces.IQueue;
+
+import edu.caltech.cs2.textgenerator.MarkovTextGenerator;
+
 
 import java.util.Iterator;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
+
 
 public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
+
+    private static final int[] PRIMES = new int[]{2, 5, 11, 23, 47, 97, 197, 397, 797, 1597, 3203, 6421, 12853, 25717, 51437, 102877,
+            205759, 411527, 823117, 1646237, 3292489, 6584983, 13169977, 26339969, 52679969, 105359939, 210719881, 421439783, 842879579, 1685759167};
     private Supplier<IDictionary<K, V>> chain;
+    private IDictionary<K,V>[] table;
+
+    private int placeInPrimes = 0;
+
+    private int elements;
+
 
     public ChainingHashDictionary(Supplier<IDictionary<K, V>> chain) {
-        // student: TODO fill me in!
+
+
+        this.elements = 0;
+        this.chain = chain;
+        this.table = new IDictionary[2];
+        for(int i = 0; i< table.length; i++){
+            table[i] = chain.get();
+        }
+
+//        (Supplier<IDictionary>[]) makeTable(capacity);
+//        for()
+//        chain.get();
+//        this.loadFactor = DEFAULT_LOAD_FACTOR;
+
     }
 
+
+
+
+
+
+      //MarkovTextGenerator.ArrayDeque<> deq = new MarkovTextGenerator.ArrayDeque<>();
+    //MarkovTextGenerator.TrieMap<Integer,K,V> = new MarkovTextGenerator.TrieMap<Integer,K,V>
+    //triemap where hashcode = a, <K,V> dictionary
     /**
      * @param key
      * @return value corresponding to key
      */
     @Override
     public V get(K key) {
-        return null;
+        int Hashindex = Math.abs(key.hashCode()) % table.length;
+        return table[Hashindex].get(key);
+        //IDictionary<K, V> bucket = this.table[Hashindex].get();
+
     }
+//        if(table[Hashindex] != null) {
+//            return table[Hashindex].get(Dictionary<K,V>);
+//        }
+//        return null;
+       // Supplier<IDictionary<K, V>> chainz = table[Hashindex];
+        //if (chainz == null) {
+       //     return null;
+       // }
+       // return chainz.get();
+
+       // if(table[Hashindex] == null|| !table[Hashindex].containsKey(key))
+        //IDictionary<K,V> bucket = table.peek();
+        //LinkedList?
+        //for(this.chain: table){
+        //chain.hashCode();
+        //new ChainingHashDictionary();
+       // IDictionary<K,V> bucket = (IDictionary<K, V>) chain[index];
+       // if(bucket.containsKey(key)) {
+       //     return bucket.get(key);
+       // }
+        //other implementation
+        //check chains[hashcode]==null
+       // for (IDictionary<K, V> e : table) {
+       //     if (e.containsKey(key)) {
+              //  return e.get(key);
+        //    }
+
+       // } return null;
+
+
+
+
 
     @Override
     public V remove(K key) {
-        return null;
+        int Hashindex = Math.abs(key.hashCode()) % table.length;
+       // if(this.table[Hashindex] != null) {
+            V value = this.table[Hashindex].remove(key);
+            if (value != null) {
+                this.elements--;
+                return value;
+            }
+            return null;
     }
+//        if(table[index] == null || !table[index].get().containsKey(key))
+//            for(IDictionary<K,V> e: table){
+//                if(e.containsKey(key)){
+//                    e.remove(key);
+//                    this.elementNum--;
+//                }
+//            }
+//        V value = chain.remove(key);
+//        if (value != null) {
+//            size--;
+//            if (chain.isEmpty()) {
+//                table[index] = null;
+//            }
+//        }
+//        return value;
+//        }
+//        int index = Math.floorMod(key.hashCode(), capacity);
+//        IDictionary<K, V> chain = table[index];
+//        if (chain == null) {
+//            return null;
+//        }
+//        V removed = chain.remove(key);
+//        if (removed != null) {
+//            size--;
+//        }
+//        return removed;
+//    }
 
     @Override
     public V put(K key, V value) {
-        return null;
+        int Hashindex = Math.abs(key.hashCode()) % table.length;
+        V result = table[Hashindex].put(key, value);
+        if (result == null) {
+            this.elements++;
+            //elements size
+            if ((double)this.elements / (double) table.length >= 1.00) {
+                this.resize();
+            }
+        }
+        return result;
     }
+    private void resize() {
+
+        IDictionary<K, V>[] newTable = new IDictionary[PRIMES[this.placeInPrimes+1]];
+
+        for (int j = 0; j < newTable.length; j++) {
+            newTable[j] = chain.get();
+        }
+        for(K Key: this.keys()){
+            int Hashindex = Math.abs(Key.hashCode()) % newTable.length;
+            newTable[Hashindex].put(Key, this.get(Key));
+            //table[Key.hashCode()]
+
+        }
+        this.placeInPrimes ++;
+
+        this.table = newTable;
+       // this.capacity = newTable.length;
+        }
+
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        int Hashindex = Math.abs(key.hashCode()) % table.length;
+        //if(t )
+         return table[Hashindex].containsKey(key);
+
+//        if (chain == null) {
+//            return false;
+//        }
+
     }
 
     /**
@@ -47,6 +183,15 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
      */
     @Override
     public boolean containsValue(V value) {
+        for (IDictionary<K,V> bucket : this.table) {
+            //go thorugh all the buckets and return false at the end
+            if (bucket != null) {
+                //IDictionary<K, V> dict = bucket.get();
+                if (bucket.containsValue(value)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -55,17 +200,34 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
      */
     @Override
     public int size() {
-        return 0;
+        return this.elements;
     }
 
     @Override
     public ICollection<K> keys() {
-        return null;
+        ICollection<K> keys = new MarkovTextGenerator.ArrayDeque<>();
+        for (IDictionary<K,V> bucket : this.table) {
+            if (bucket != null) {
+                //IDictionary<K, V> dict = bucket.get();
+                for (K key : bucket.keys()) {
+                    keys.add(key);
+                }
+            }
+        }
+        return keys;
     }
 
     @Override
     public ICollection<V> values() {
-        return null;
+        ICollection<V> values = new MarkovTextGenerator.ArrayDeque<>();
+        for (IDictionary<K,V> bucket : this.table) {
+            if (bucket != null) {
+                for (V value : bucket.values()) {
+                    values.add(value);
+                }
+            }
+        }
+        return values;
     }
 
     /**
@@ -73,6 +235,20 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
      */
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return this.keys().iterator();
     }
+
+    @Override
+    public String toString() {
+//        if (this.root == null) {
+//            return "{}";
+//        }
+        StringBuilder contents = new StringBuilder();
+        for (IDictionary<K, V> bucket : this.table) {
+            contents.append(bucket.toString());
+        }
+        return "{" + contents + "}";
+
+    }
+
 }

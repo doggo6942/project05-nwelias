@@ -1,8 +1,10 @@
+
+
 package edu.caltech.cs2.datastructures;
 
-import edu.caltech.cs2.interfaces.ICollection;
-import edu.caltech.cs2.interfaces.IQueue;
-import edu.caltech.cs2.interfaces.IDictionary;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import edu.caltech.cs2.interfaces.*;
+import edu.caltech.cs2.textgenerator.MarkovTextGenerator;
 
 import java.util.Iterator;
 
@@ -41,6 +43,7 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
         public boolean isLeaf() {
             return this.left == null && this.right == null;
+
         }
 
         public boolean hasBothChildren() {
@@ -59,28 +62,210 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
     @Override
     public V get(K key) {
+        // start searching for the key from the root
+        if(root==null){
+            return null;
+        }
+        if(root.key.equals(key)){
+            return root.value;
+        }
+
+            return getKey(root, key);
+
+
+//        else {
+//            //key k of a node is always greater than the keys
+//            //present in its left sub tree
+//            //key k of a node is always lesser thann the keys present in
+//            //its right sub tree
+//            if (key.compareTo(root.key) < 0) {
+//                return getKey(root.left, key);
+//            }
+//            if (key.compareTo(root.key) > 0) {
+//                return getKey(root.right, key);
+//            }
+//        }
+//        return null;
+    }
+
+    private V getKey(BSTNode<K,V> node, K key) {
+        if(node==null){
+            return null;
+        }
+        if(node.key.equals(key)){
+            return node.value;
+        }
+        else {
+//swap left & right?
+            if (key.compareTo(node.key) < 0) {
+                return getKey(node.left, key);
+            }
+            if(key.compareTo(node.key) > 0){
+                return getKey(node.right, key);
+            }
+        }
         return null;
     }
+
 
     @Override
     public V remove(K key) {
+        BSTNode<K,V> deletedNode = removeKey(root, key);
+        if(deletedNode != null) {
+            size--;
+            return deletedNode.value;
+        }
         return null;
     }
+//BSTNode<K,V> parentOfNodeToDelete, boolean left
+    private BSTNode<K,V> removeKey(BSTNode<K,V> node, K key) {
+        if (node == null) {
+            return node;
+        }
+        if (key.compareTo(node.key) < 0) {
+            node.left = removeKey(node.left, key);
+            //System.out.println("Going left  from " + node.key + "to " + ( node.left != null ? node.left.key:" ") );
+        } else if (key.compareTo(node.key) > 0) {
+            node.right = removeKey(node.right, key);
+            // System.out.println("Going right from " + node.key + "to " + (node.right != null ? node.right.key: " "));
+        } else {
+            // System.out.println("This is the node to remove " +( node.left != null ? node.left.key:" ") + ", "
+            //    + (node.right != null ? node.right.key: " "));
+
+            if (node.left == null) {
+                return node.right;
+            } else if (node.right == null) {
+                return node.left;
+            }
+
+            // BSTNode<K,V> old = node;
+            BSTNode<K, V> successor = node.right;
+            while (successor.left != null) {
+                successor = successor.left;
+            }
+
+            // 7                       8
+            // set current node's left to successor's left
+            // System.out.println("Minimum is " + successor.key + " to replave " + node.key );
+            removeKey(node, successor.key);
+            successor.right = node.right;
+            successor.left = node.left;
+//            putRecursive(successor, node.right);
+//            putRecursive(successor, node.left);
+//            if(parentOfNodeToDelete == null){
+//                root = successor;
+//            }
+//            else if(left){
+//                parentOfNodeToDelete.left = successor;
+//            }
+//            else {
+//                parentOfNodeToDelete.right = successor;
+//            }
+            node = successor;
+//
+//        }
+
+
+        }
+        return node;
+    }
+
+
 
     @Override
     public V put(K key, V value) {
-        return null;
+        BSTNode<K,V> newNode = new BSTNode<>(key, value);
+        if(root == null){
+            size++;
+            root = newNode;
+            return null;
+        }
+        return putRecursive(root, newNode);
+
+//        if(root==null) {
+//            return null;
+//
+    }
+
+    private V putRecursive(BSTNode<K,V> node, BSTNode<K,V> newNode) {
+
+        if(newNode.key.compareTo(node.key)<0){
+            if(node.left == null){
+                node.left = newNode;
+                size++;
+                return null;
+            }
+            return putRecursive(node.left, newNode);
+        }
+        else if(newNode.key.compareTo(node.key)>0){
+            if(node.right == null) {
+                node.right = newNode;
+                size++;
+                return null;
+            }
+            return putRecursive(node.right, newNode);
+        }
+        V val = node.value;
+        node.value = newNode.value;
+
+        return val;
     }
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        return containsKey(root, key);
+    }
+    private boolean containsKey(BSTNode<K,V> node, K key){
+        if(node == null){
+            return false;
+        }
+        if(node.key.equals(key)){
+            return true;
+        }
+        //key k of a node is always greater than the keys
+        //present in its left sub tree
+        //key k of a node is always lesser thann the keys present in
+        //its right sub tree
+        if(key.compareTo(node.key)<0){
+            return containsKey(node.left, key);
+        }
+        if(key.compareTo(node.key)>0){
+            return containsKey(node.right, key);
+        }
+       return false;
     }
 
     @Override
     public boolean containsValue(V value) {
-        return false;
+       return containsValue(root, value);
     }
+        private boolean containsValue(BSTNode<K,V> node, V value){
+
+            if (node == null) {
+                return false;
+            }
+            if (node.value.equals(value)) {
+                return true;
+            }
+            //key k of a node is always greater than the keys
+            //present in its left sub tree
+            //key k of a node is always lesser thann the keys present in
+            //its right sub tree
+            //
+            if (containsValue(node.left,value) || containsValue(node.right, value)){
+                return true;
+            }
+//            if ((value.hashCode() - node.value.hashCode()) < 0) {
+//                return containsValue(node.left, value);
+//            }
+//            if ((value.hashCode() - node.value.hashCode()) > 0){
+//                return containsValue(node.right, value);
+//            }
+//            //return false;
+//            return false;
+            return false;
+        }
+
 
     /**
      * @return number of key/value pairs in the BST
@@ -92,12 +277,36 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
     @Override
     public ICollection<K> keys() {
-        return null;
+        MarkovTextGenerator.ArrayDeque<K> collection =
+                new MarkovTextGenerator.ArrayDeque<>();
+        keysRecursive(root, collection);
+        return collection;
+    }
+
+    private void keysRecursive(BSTNode<K,V> node,
+                               MarkovTextGenerator.ArrayDeque<K> collection) {
+        if(node != null){
+            keysRecursive(node.left, collection);
+            collection.add(node.key);
+            keysRecursive(node.right, collection);
+        }
     }
 
     @Override
     public ICollection<V> values() {
-        return null;
+        MarkovTextGenerator.ArrayDeque<V> collection =
+                new MarkovTextGenerator.ArrayDeque<>();
+        valuesRecursive(root, collection);
+        return collection;
+    }
+
+    private void valuesRecursive(BSTNode<K,V> node,
+                                 MarkovTextGenerator.ArrayDeque<V> collection) {
+        if(node != null){
+            valuesRecursive(node.left, collection);
+            collection.add(node.value);
+            valuesRecursive(node.right, collection);
+        }
     }
 
     /**
@@ -107,6 +316,13 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
     @Override
     public Iterator<K> iterator() {
         return keys().iterator();
+        //comapre key to key at node that you are at, if less than call on the left side
+        //get reurn value instead of returning true
+        //for contains value go thorugh whole tree
+        ///iterate til you get to leaf, if 4 is less than 3, put it to the left
+        //sort up, sort up. You could/
+        //if that they add in could, re-sort.
+
     }
 
     @Override
@@ -117,7 +333,7 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
         StringBuilder contents = new StringBuilder();
 
-        IQueue<BSTNode<K, V>> nodes = new ArrayDeque<>();
+        IQueue<BSTNode<K, V>> nodes = new MarkovTextGenerator.ArrayDeque<>();
         BSTNode<K, V> current = this.root;
         while (current != null) {
             contents.append(current.key + ": " + current.value + ", ");
@@ -134,4 +350,6 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
         return "{" + contents.toString().substring(0, contents.length() - 2) + "}";
     }
+
+
 }
