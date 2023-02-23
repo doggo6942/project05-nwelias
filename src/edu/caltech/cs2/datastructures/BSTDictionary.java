@@ -110,17 +110,21 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
     @Override
     public V remove(K key) {
-        BSTNode<K,V> deletedNode = removeKey(root, key);
-        if(deletedNode != null) {
-            size--;
-            return deletedNode.value;
-        }
+        if(containsKey(key)) {
+            V value = get(key);
+            root = removeKey(root, key);
+                size--;
+                return value;
+            }
+
+
         return null;
     }
-//BSTNode<K,V> parentOfNodeToDelete, boolean left
+
     private BSTNode<K,V> removeKey(BSTNode<K,V> node, K key) {
+
         if (node == null) {
-            return node;
+            return null;
         }
         if (key.compareTo(node.key) < 0) {
             node.left = removeKey(node.left, key);
@@ -129,47 +133,42 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
             node.right = removeKey(node.right, key);
             // System.out.println("Going right from " + node.key + "to " + (node.right != null ? node.right.key: " "));
         } else {
+            return minfind(node);
             // System.out.println("This is the node to remove " +( node.left != null ? node.left.key:" ") + ", "
             //    + (node.right != null ? node.right.key: " "));
-
-            if (node.left == null) {
-                return node.right;
-            } else if (node.right == null) {
-                return node.left;
-            }
-
-            // BSTNode<K,V> old = node;
-            BSTNode<K, V> successor = node.right;
-            while (successor.left != null) {
-                successor = successor.left;
-            }
-
-            // 7                       8
-            // set current node's left to successor's left
-            // System.out.println("Minimum is " + successor.key + " to replave " + node.key );
-            removeKey(node, successor.key);
-            successor.right = node.right;
-            successor.left = node.left;
-//            putRecursive(successor, node.right);
-//            putRecursive(successor, node.left);
-//            if(parentOfNodeToDelete == null){
-//                root = successor;
-//            }
-//            else if(left){
-//                parentOfNodeToDelete.left = successor;
-//            }
-//            else {
-//                parentOfNodeToDelete.right = successor;
-//            }
-            node = successor;
 //
-//        }
-
 
         }
         return node;
     }
 
+    private BSTNode<K,V> minfind(BSTNode<K,V> node){
+        if (node.left == null) {
+            return node.right;
+        } else if (node.right == null) {
+            return node.left;
+        }
+
+        BSTNode<K, V> parent = node.right;
+        //BSTNode<K, V> child =  parent.left;
+        //take right and go down
+
+        while (parent.left != null) {
+            parent = parent.left;
+        }
+        removeKey(node, parent.key);
+        parent.right = node.right;
+        parent.left = node.left;
+
+      //  minfind(parent, parent.key);
+//
+//        removeKey(node, successor.key);
+//        successor.right = node.right;
+//        successor.left = node.left;
+////
+       return parent;
+
+    }
 
 
     @Override
