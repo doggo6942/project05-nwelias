@@ -94,9 +94,9 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
 
     @Override
     public V remove(K key) {
-        int Hashindex = Math.abs(key.hashCode()) % table.length;
+        int HashIndex = Math.abs(key.hashCode()) % table.length;
        // if(this.table[Hashindex] != null) {
-            V value = this.table[Hashindex].remove(key);
+            V value = this.table[HashIndex].remove(key);
             if (value != null) {
                 this.elements--;
                 return value;
