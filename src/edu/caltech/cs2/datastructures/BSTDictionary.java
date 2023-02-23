@@ -73,19 +73,6 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
             return getKey(root, key);
 
 
-//        else {
-//            //key k of a node is always greater than the keys
-//            //present in its left sub tree
-//            //key k of a node is always lesser thann the keys present in
-//            //its right sub tree
-//            if (key.compareTo(root.key) < 0) {
-//                return getKey(root.left, key);
-//            }
-//            if (key.compareTo(root.key) > 0) {
-//                return getKey(root.right, key);
-//            }
-//        }
-//        return null;
     }
 
     private V getKey(BSTNode<K,V> node, K key) {

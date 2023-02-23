@@ -73,7 +73,7 @@ public class NGram implements Iterable<String>, Comparable<NGram> {
         // Compare sizes first
         int sizeDiff = this.data.size() - other.data.size();
         if (sizeDiff != 0) {
-            //if calling object is bigger than passed ngram, immediatly return the size difference
+            //if g object is bigger than passed ngram, immediatly return the size difference
             return sizeDiff;
         }
 

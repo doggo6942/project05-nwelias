@@ -59,34 +59,7 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
         //IDictionary<K, V> bucket = this.table[Hashindex].get();
 
     }
-//        if(table[Hashindex] != null) {
-//            return table[Hashindex].get(Dictionary<K,V>);
-//        }
-//        return null;
-       // Supplier<IDictionary<K, V>> chainz = table[Hashindex];
-        //if (chainz == null) {
-       //     return null;
-       // }
-       // return chainz.get();
 
-       // if(table[Hashindex] == null|| !table[Hashindex].containsKey(key))
-        //IDictionary<K,V> bucket = table.peek();
-        //LinkedList?
-        //for(this.chain: table){
-        //chain.hashCode();
-        //new ChainingHashDictionary();
-       // IDictionary<K,V> bucket = (IDictionary<K, V>) chain[index];
-       // if(bucket.containsKey(key)) {
-       //     return bucket.get(key);
-       // }
-        //other implementation
-        //check chains[hashcode]==null
-       // for (IDictionary<K, V> e : table) {
-       //     if (e.containsKey(key)) {
-              //  return e.get(key);
-        //    }
-
-       // } return null;
 
 
 
