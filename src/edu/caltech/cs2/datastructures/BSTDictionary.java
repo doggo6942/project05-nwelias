@@ -64,7 +64,6 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
     @Override
     public V get(K key) {
-        // start searching for the key from the root
         if(root==null){
             return null;
         }

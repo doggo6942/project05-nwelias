@@ -133,7 +133,6 @@ public class MoveToFrontDictionary<K, V> implements IDictionary<K,V> {
 
         StringBuilder contents = new StringBuilder();
 
-        // IQueue<Node> nodes = new MarkovTextGenerator.ArrayDeque<>();
         Node<K,V> current = this.head;
         while (current != null) {
             contents.append(current.key + ": " + current.value + ", ");

@@ -44,7 +44,6 @@ public class ChainingHashDictionary<K, V> implements IDictionary<K, V> {
     public V get(K key) {
         int Hashindex = Math.abs(key.hashCode()) % table.length;
         return table[Hashindex].get(key);
-        //IDictionary<K, V> bucket = this.table[Hashindex].get();
 
     }
 

@@ -90,7 +90,7 @@ public class NGram implements Iterable<String>, Comparable<NGram> {
                 return elementDiff;
             }
         }
-        // If we got here, the n-grams are equal
+
        return 0;
 
     }
