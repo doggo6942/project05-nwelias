@@ -2,8 +2,10 @@
 
 package edu.caltech.cs2.datastructures;
 
-import com.github.javaparser.ast.stmt.BlockStmt;
-import edu.caltech.cs2.interfaces.*;
+
+
+import edu.caltech.cs2.interfaces.ICollection;
+import edu.caltech.cs2.interfaces.IDictionary;
 import edu.caltech.cs2.textgenerator.MarkovTextGenerator;
 
 import java.util.Iterator;
@@ -308,7 +310,7 @@ public class BSTDictionary<K extends Comparable<? super K>, V>
 
         StringBuilder contents = new StringBuilder();
 
-        IQueue<BSTNode<K, V>> nodes = new MarkovTextGenerator.ArrayDeque<>();
+        MarkovTextGenerator.ArrayDeque<BSTNode<K, V>> nodes = new MarkovTextGenerator.ArrayDeque<>();
         BSTNode<K, V> current = this.root;
         while (current != null) {
             contents.append(current.key + ": " + current.value + ", ");
